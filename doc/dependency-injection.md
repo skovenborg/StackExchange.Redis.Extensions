@@ -16,13 +16,13 @@ All you need to do is this:
 public static IServiceCollection AddStackExchangeRedisExtensions<T>(this IServiceCollection services, RedisConfiguration redisConfiguration)
     where T : class, ISerializer, new()
 {
-    services.AddSingleton<IRedisCacheClient, RedisCacheClient>();
-    services.AddSingleton<IRedisCacheConnectionPoolManager, RedisCacheConnectionPoolManager>();
+    services.AddSingleton<IRedisClient, RedisClient>();
+    services.AddSingleton<IRedisConnectionPoolManager, RedisConnectionPoolManager>();
     services.AddSingleton<ISerializer, T>();
 
     services.AddSingleton((provider) =>
     {
-        return provider.GetRequiredService<IRedisCacheClient>().GetDbFromConfiguration();
+        return provider.GetRequiredService<IRedisClient>().GetDbFromConfiguration();
     });
 
     services.AddSingleton(redisConfiguration);
